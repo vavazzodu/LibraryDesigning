@@ -15,5 +15,4 @@ clean:
 	rm dll.o
 	rm dll_utils.o
 	rm libdll.a
-
-
+	rm exe
