@@ -7,8 +7,8 @@
 **Static Library :**
 
 `gcc -c file_name.c -o file_name.o`
-`
-ar rs library_name.a file_name.o` 
+
+`ar rs library_name.a file_name.o`
 
 **Dynamic library :**
 
