@@ -1,7 +1,7 @@
 target: application
 
 application: application.o lapp.a
-	gcc application.o -o application -L . -lapp
+	gcc -g application.o -o application -L . -lapp
 application.o: application.c
 	gcc -c application.c -o application.o
 lapp.a: dll.o
