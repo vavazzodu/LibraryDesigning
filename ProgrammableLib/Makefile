@@ -1,13 +1,15 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
 target: application
 
 application: application.o lapp.a
-	gcc -g application.o -o application -L . -lapp
+	$(CC) $(CFLAGS) application.o -o application -L . -lapp
 application.o: application.c
-	gcc -c application.c -o application.o
+	$(CC) -c application.c -o application.o
 lapp.a: dll.o
 	ar rs libapp.a dll.o
 dll.o: dll.c
-	gcc -c dll.c -o dll.o
+	$(CC) -c dll.c -o dll.o
 
 clean:
 	rm dll.o
