@@ -17,10 +17,15 @@ typedef struct employee {
 
 void print_student_list(const dll_t *student_list);
 void print_employee_list(const dll_t *employee_list);
+/* Normal search functions */
 student_t * find_student(const dll_t *student_list, int key);
 employee_t * find_employee(const dll_t *employee_list, int key);
+/* Functions to print the node */
 void print_student(const student_t *data);
 void print_employee(const employee_t *data);
+/* call-back functions */
+int student_record_match(void *, void *);
+int employee_record_match(void *, void *);
 
 int
 main(int argc, char **argv){
@@ -44,10 +49,23 @@ main(int argc, char **argv){
 		printf("Error: get_dll returned NULL\n");
 		return -1;
 	}
+	register_call_back(student_data, student_record_match);
 	add_node(student_data, student1);
 	add_node(student_data, student2);
 	add_node(student_data, student3);
 
+	/* This is search using call-back */
+	student_t *student = find_from_db(student_data, (void *)30);
+	if(!student){
+		printf("Student record not found\n");
+	}
+	else{
+		printf("Student found\n");
+		print_student(student);
+	}
+
+	/* This is normal search */
+	/*
 	student_t *student = find_student(student_data, 10);
 	if(!student)
 		printf("Student is not found\n");
@@ -55,6 +73,8 @@ main(int argc, char **argv){
 		printf("student found\n");
 		print_student(student);
 	}
+	*/
+	
 	employee_t *emp1 = calloc(1, sizeof(employee_t));
 	emp1->id = 111;
 	strcpy(emp1->name, "ABC");
@@ -71,10 +91,22 @@ main(int argc, char **argv){
 	strcpy(emp3->designation, "Tester");
 
 	dll_t *employee_data = get_dll();
+	register_call_back(employee_data, employee_record_match);
 	add_node(employee_data, emp1);
 	add_node(employee_data, emp2);
 	add_node(employee_data, emp3);
 	
+	/* This is search using call-back */
+	employee_t *employee = find_from_db(employee_data, (void *)111);
+	if(!employee){
+		printf("Emloyee record not found\n");
+	}
+	else{
+		printf("Employee found\n");
+		print_employee(employee);
+	}
+	/* This is normal search */
+	/*
 	employee_t *employee = find_employee(employee_data, 222);
 	if(!employee)
 		printf("Employee is not found\n");
@@ -82,6 +114,8 @@ main(int argc, char **argv){
 		printf("Employee found\n");
 		print_employee(employee);
 	}
+	*/
+	return 0;
 }
 void
 print_student(const student_t *data){
@@ -162,5 +196,23 @@ find_employee(const dll_t *employee_list, int key){
 			return data;
 		temp_head = temp_head->next;
 	}
+}
+int 
+student_record_match(void *dll_data, void *key){
+	student_t *lvdata = (student_t *)dll_data;
+	int lvRollno = (int)key;
+	if(lvdata->roll_no == lvRollno)
+		return 0;
+	else
+		return 1;
+
+}
+int employee_record_match(void *dll_data, void *key){
+	employee_t *lvdata = (employee_t*)dll_data;
+	int lvEmpId = (int)key;
+	if(lvdata->id == lvEmpId)
+		return 0;
+	else
+		return 1;
 }
 

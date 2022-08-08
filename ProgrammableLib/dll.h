@@ -8,6 +8,7 @@ typedef struct dll_node {
 
 typedef struct dll {
 	dll_node_t *head;
+	int (*key_match)(void*, void*);
 }dll_t;
 
 dll_t *
@@ -16,11 +17,8 @@ get_dll(void);
 int
 add_node(dll_t *dll, void *app_data);
 
-int
-remove_data_from_dll_by_data_ptr(dll_t *dll, void *data);
-
-int
-is_empty(dll_t *dll);
-
 void
-drain_dll(dll_t *dll);
+register_call_back(dll_t *, int (*call_back)(void *, void *));
+
+void *
+find_from_db(dll_t *, void *);
